@@ -1,0 +1,46 @@
+{
+  "name": "MultiFramework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:shell": "pnpm --filter shell dev",
+    "dev:dashboard": "pnpm --filter mfe-dashboard dev",
+    "dev:crew": "pnpm --filter mfe-crew start",
+    "dev:inventory": "pnpm --filter mfe-inventory dev",
+    "dev:analytics": "pnpm --filter mfe-analytics dev",
+    "dev:settings": "pnpm --filter mfe-settings dev",
+    "dev:all": "concurrently \"pnpm dev:shell\" \"pnpm dev:dashboard\" \"pnpm dev:crew\" \"pnpm dev:inventory\" \"pnpm dev:analytics\" \"pnpm dev:settings\"",
+    "prepare": "husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.24.0",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "husky": "^9.1.7",
+    "install": "^0.13.0",
+    "lint-staged": "^16.2.7",
+    "npm": "^11.6.4",
+    "prettier": "^3.7.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,html}": [
+      "prettier --write"
+    ]
+  }
+}

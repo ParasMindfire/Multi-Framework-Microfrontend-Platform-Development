@@ -1,0 +1,5 @@
+packages:
+  - 'shell'
+  - 'mfe-*'
+  - 'common'
+  - 'ui'
