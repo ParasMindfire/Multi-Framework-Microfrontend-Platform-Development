@@ -1,6 +1,6 @@
 // Windows temporarily needs this file, https://github.com/module-federation/vite/issues/68
 
-// import { loadShare } from '@module-federation/runtime'
+import { loadShare } from '@module-federation/runtime'
 const importMap = {
   svelte: async () => {
     let pkg = await import('__mf__virtual/analytics__prebuild__svelte__prebuild__.js')
@@ -16,7 +16,7 @@ const usedShared = {
     from: 'analytics',
     async get() {
       if (false) {
-        // throw new Error(`Shared module '${'svelte'}' must be provided by host`)
+        throw new Error(`Shared module '${'svelte'}' must be provided by host`)
       }
       usedShared['svelte'].loaded = true
       const { svelte: pkgDynamicImport } = importMap
