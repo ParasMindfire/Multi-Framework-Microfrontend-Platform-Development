@@ -1,0 +1,70 @@
+.flights-table-container {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.flights-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.flights-table thead {
+  background: #f6f8fa;
+}
+
+.flights-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #24292e;
+  border-bottom: 2px solid #e1e4e8;
+}
+
+.flights-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.flights-table th.sortable:hover {
+  background: #eef1f4;
+}
+
+.flights-table tbody tr {
+  border-bottom: 1px solid #e1e4e8;
+  transition: background 0.2s;
+}
+
+.flights-table tbody tr:hover {
+  background: #f6f8fa;
+}
+
+.flights-table tbody tr.selected {
+  background: #e6f2ff;
+}
+
+.flights-table td {
+  padding: 1rem;
+  color: #24292e;
+}
+
+.flight-number {
+  font-weight: 600;
+  color: #0066cc;
+}
+
+.select-btn {
+  padding: 0.5rem 1rem;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.select-btn:hover {
+  background: #0052a3;
+}

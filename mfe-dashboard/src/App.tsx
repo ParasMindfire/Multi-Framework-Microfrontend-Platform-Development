@@ -1,5 +1,5 @@
-import './App.css'
+import DashboardPage from './pages/DashboardPage/DashboardPage'
 
 export default function App() {
-  return <h2>Hello from Dashboard (React MFE)</h2>
+  return <DashboardPage />
 }

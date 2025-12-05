@@ -26,6 +26,6 @@ export default defineConfig({
           requiredVersion: '^3.4.0',
         },
       },
-    }),
-  ],
+    }) as any,
+  ] as any,
 })

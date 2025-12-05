@@ -1,0 +1,37 @@
+.selected-flight-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #e6f2ff 0%, #f6f8fa 100%);
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+}
+
+.selected-flight-card h3 {
+  color: #0066cc;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.flight-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.detail-item {
+  margin: 0;
+}
+
+.detail-item strong {
+  display: block;
+  color: #586069;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.detail-item p {
+  margin: 0;
+  color: #24292e;
+  font-size: 1rem;
+  font-weight: 500;
+}

@@ -8,7 +8,19 @@ declare module 'inventory/App' {
   export default mount
 }
 
+declare module 'crew/App' {
+  export const mount: (el: HTMLElement) => Promise<{
+    destroy: () => void
+  }>
+}
+
 declare module 'analytics/App' {
-  const mount: (target: HTMLElement) => { destroy: () => void }
+  const mount: (target: HTMLElement) => {
+    destroy: () => void
+  }
   export default mount
+}
+
+declare module 'settings/App' {
+  export {}
 }

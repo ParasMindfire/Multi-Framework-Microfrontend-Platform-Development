@@ -29,6 +29,7 @@ export default defineConfig({
           singleton: true,
           requiredVersion: '^18.2.0',
         },
+        '@skycart/common': { singleton: true },
       },
     }),
   ],
