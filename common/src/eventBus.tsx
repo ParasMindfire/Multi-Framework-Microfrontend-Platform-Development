@@ -6,6 +6,7 @@ class EventBus {
   private events: Map<string, EventCallback[]> = new Map()
 
   subscribe(event: string, callback: EventCallback): () => void {
+    console.log('subscribe ho rha kya ? ')
     if (!this.events.has(event)) {
       this.events.set(event, [])
     }
@@ -22,6 +23,7 @@ class EventBus {
   }
 
   publish(event: string, data?: any): void {
+    console.log('data ahh' + data)
     const callbacks = this.events.get(event)
     if (callbacks) {
       callbacks.forEach((callback) => {

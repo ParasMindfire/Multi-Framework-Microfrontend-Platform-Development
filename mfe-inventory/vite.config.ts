@@ -25,6 +25,7 @@ export default defineConfig({
           singleton: true,
           requiredVersion: '^3.4.0',
         },
+        '@skycart/common': { singleton: true },
       },
     }) as any,
   ] as any,

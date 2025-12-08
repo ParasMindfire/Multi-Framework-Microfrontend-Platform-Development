@@ -43,6 +43,7 @@ export default function DashboardPage() {
 
   const handleFlightSelect = (flight: Flight) => {
     setSelectedFlight(flight)
+    sessionStorage.setItem('selectedFlight', JSON.stringify(flight))
     publish(EVENT_TYPES.FLIGHT_SELECTED, { flight })
     console.log('✈️ Flight selected event published:', flight)
   }

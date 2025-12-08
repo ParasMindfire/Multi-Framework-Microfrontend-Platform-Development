@@ -1,4 +1,3 @@
-// apps/mfe-dashboard/src/components/FlightTable/FlightTable.tsx
 import { formatTime } from '@skycart/common'
 import type { Flight } from '@skycart/common'
 import './FlightTable.css'

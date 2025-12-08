@@ -49,6 +49,40 @@ class ApiClient {
   async getInventory(flightId: number): Promise<{ inventory: InventoryItem[] }> {
     return this.fetch<{ inventory: InventoryItem[] }>(`/api/inventory/${flightId}`)
   }
+
+  async addInventoryItem(
+    flightId: number,
+    item: {
+      item_name: string
+      quantity: number
+      trolley_id?: number | null
+      category?: string
+      unit?: string
+      location?: string
+    },
+  ): Promise<{ item: InventoryItem }> {
+    return this.fetch<{ item: InventoryItem }>(`/api/inventory/${flightId}`, {
+      method: 'POST',
+      body: JSON.stringify({ ...item, flight_id: flightId }),
+    })
+  }
+
+  async deleteInventoryItem(flightId: number, itemId: number): Promise<{ success: boolean }> {
+    return this.fetch<{ success: boolean }>(`/api/inventory/${flightId}/${itemId}`, {
+      method: 'DELETE',
+    })
+  }
+
+  async updateInventoryItem(
+    flightId: number,
+    itemId: number,
+    updates: { quantity?: number; trolley_id?: number },
+  ): Promise<{ item: InventoryItem }> {
+    return this.fetch<{ item: InventoryItem }>(`/api/inventory/${flightId}/${itemId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    })
+  }
 }
 
 export const apiClient = new ApiClient(API_BASE_URL)

@@ -14,18 +14,18 @@ export default function Navigation() {
       <Link to="/dashboard" className={isActive('/dashboard') ? 'active' : ''}>
         Flight Dashboard
       </Link>
-      <Link to="/crew" className={isActive('/crew') ? 'active' : ''}>
+      {/* <Link to="/crew" className={isActive('/crew') ? 'active' : ''}>
         Crew Management
-      </Link>
+      </Link> */}
       <Link to="/inventory" className={isActive('/inventory') ? 'active' : ''}>
         Inventory
       </Link>
       <Link to="/analytics" className={isActive('/analytics') ? 'active' : ''}>
         Analytics
       </Link>
-      <Link to="/settings" className={isActive('/settings') ? 'active' : ''}>
+      {/* <Link to="/settings" className={isActive('/settings') ? 'active' : ''}>
         Settings
-      </Link>
+      </Link> */}
     </nav>
   )
 }
