@@ -65,6 +65,10 @@ importers:
         version: 5.4.21(@types/node@24.10.1)(less@4.4.2)(sass@1.93.2)(terser@5.44.1)
 
   mfe-analytics:
+    dependencies:
+      '@skycart/common':
+        specifier: workspace:*
+        version: link:../common
     devDependencies:
       '@module-federation/vite':
         specifier: ^1.9.2

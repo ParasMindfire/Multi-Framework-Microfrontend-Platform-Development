@@ -108,8 +108,26 @@ const loadInventory = async () => {
 
     const data = await response.json()
     inventoryItems.value = data.inventory
-  
+    
     distributeItemsToTrolleys()
+
+    // Publish initial inventory
+    const totalQuantity = inventoryItems.value.reduce((sum, item) => sum + item.quantity, 0)
+    
+    console.log('📦 About to publish INVENTORY_CHANGED:', {
+      flightId: selectedFlight.value.id,
+      quantity: totalQuantity,
+      action: 'loaded',
+    })
+    
+    eventBus.publish(EVENT_TYPES.INVENTORY_CHANGED, {
+      flightId: selectedFlight.value.id,
+      quantity: totalQuantity,
+      action: 'loaded',
+    })
+    
+    console.log('📦 Published INVENTORY_CHANGED event')
+    
   } catch (err) {
     error.value = 'Failed to load inventory. Please try again.'
     console.error(err)

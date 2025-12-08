@@ -21,6 +21,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.24.0",
   "devDependencies": {
+    "@gltf-transform/cli": "^4.2.1",
+    "@types/three": "^0.181.0",
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
     "concurrently": "^9.2.1",
@@ -43,5 +45,9 @@
     "*.{json,md,css,html}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "gsap": "^3.14.0",
+    "three": "^0.181.2"
   }
 }

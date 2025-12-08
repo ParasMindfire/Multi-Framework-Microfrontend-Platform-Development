@@ -16,4 +16,5 @@ export interface Trolley {
   position: { x: number; y: number }
   isOpen: boolean
   items: InventoryItem[]
+  drawers?: { isOpen: boolean }[]
 }
