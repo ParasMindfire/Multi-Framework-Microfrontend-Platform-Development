@@ -20,8 +20,14 @@ export const getInventory = async (req, res) => {
 export const addInventoryItem = async (req, res) => {
   try {
     const flightId = req.params.flightId
-    const { item_name, quantity, trolley_id } = req.body
-    const item = await createInventoryItem(flightId, item_name, quantity, trolley_id || null)
+    const { item_name, quantity, trolley_id, drawer_id } = req.body
+    const item = await createInventoryItem(
+      flightId,
+      item_name,
+      quantity,
+      trolley_id || null,
+      drawer_id || null,
+    )
     res.json({ item })
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -41,10 +47,7 @@ export const deleteInventoryItem = async (req, res) => {
 export const updateInventoryItem = async (req, res) => {
   try {
     const { itemId } = req.params
-    const { quantity, trolley_id } = req.body
-
-    console.log('quant ' + quantity)
-    console.log('trolley_id ' + trolley_id)
+    const { quantity, trolley_id, drawer_id } = req.body
 
     if (quantity !== undefined) {
       await updateInventoryQuantity(itemId, quantity)
@@ -54,9 +57,11 @@ export const updateInventoryItem = async (req, res) => {
       await updateInventoryTrolley(itemId, trolley_id)
     }
 
-    const item = await getInventoryItemById(itemId)
+    if (drawer_id !== undefined) {
+      await updateInventoryDrawer(itemId, drawer_id)
+    }
 
-    console.log('item ? ' + item)
+    const item = await getInventoryItemById(itemId)
     res.json({ item })
   } catch (error) {
     res.status(500).json({ error: error.message })

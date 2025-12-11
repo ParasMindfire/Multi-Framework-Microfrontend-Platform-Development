@@ -1,26 +1,27 @@
+// apps/shell/src/vite-env.d.ts
+/// <reference types="vite/client" />
+
 declare module 'dashboard/App' {
   const Component: React.ComponentType
   export default Component
 }
 
-declare module 'inventory/App' {
-  const mount: (el: HTMLElement) => () => void
-  export default mount
+declare module 'dashboard/style' {
+  export const styleUrl: string
 }
 
-declare module 'crew/App' {
-  export const mount: (el: HTMLElement) => Promise<{
-    destroy: () => void
-  }>
+declare module 'inventory/App' {
+  export default class InventoryElement extends HTMLElement {}
 }
 
 declare module 'analytics/App' {
-  const mount: (target: HTMLElement) => {
-    destroy: () => void
-  }
-  export default mount
+  export default class AnalyticsElement extends HTMLElement {}
 }
 
-declare module 'settings/App' {
-  export {}
+// Tell React about custom elements
+declare namespace JSX {
+  interface IntrinsicElements {
+    'inventory-app': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+    'analytics-app': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+  }
 }

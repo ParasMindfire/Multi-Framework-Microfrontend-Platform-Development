@@ -1,4 +1,3 @@
-// mfe-inventory/src/types.ts
 export interface InventoryItem {
   id: number
   flight_id: number
@@ -8,6 +7,7 @@ export interface InventoryItem {
   unit?: string
   location?: string
   trolley_id?: number | null
+  drawer_id?: number | null
 }
 
 export interface Trolley {

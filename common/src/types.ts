@@ -7,22 +7,27 @@ export interface Flight {
   arrival_time: string
 }
 
-export interface Crew {
-  id: number
-  name: string
-  role: 'pilot' | 'co-pilot' | 'flight-attendant' | 'purser'
-  flight_id?: number
-  status: 'available' | 'assigned' | 'off-duty'
-}
-
+// in mfe-inventory
 export interface InventoryItem {
   id: number
   flight_id: number
   item_name: string
-  category: 'food' | 'beverage' | 'amenity' | 'safety'
   quantity: number
-  unit: string
-  location: string
+  category?: string
+  unit?: string
+  location?: string
+  trolley_id?: number | null
+  drawer_id?: number | null
+}
+
+// in mfe-inventory
+export interface Trolley {
+  id: number
+  name: string
+  position: { x: number; y: number }
+  isOpen: boolean
+  items: InventoryItem[]
+  drawers?: { isOpen: boolean }[]
 }
 
 export const EVENT_TYPES = {
@@ -34,12 +39,6 @@ export const EVENT_TYPES = {
 
 export interface FlightSelectedEvent {
   flight: Flight
-}
-
-export interface CrewUpdatedEvent {
-  crewId: number
-  flightId: number
-  action: 'assigned' | 'unassigned'
 }
 
 export interface InventoryChangedEvent {

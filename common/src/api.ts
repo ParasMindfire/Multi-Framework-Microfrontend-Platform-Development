@@ -59,6 +59,7 @@ class ApiClient {
       category?: string
       unit?: string
       location?: string
+      // drawer_id:number | null
     },
   ): Promise<{ item: InventoryItem }> {
     return this.fetch<{ item: InventoryItem }>(`/api/inventory/${flightId}`, {
@@ -76,7 +77,11 @@ class ApiClient {
   async updateInventoryItem(
     flightId: number,
     itemId: number,
-    updates: { quantity?: number; trolley_id?: number },
+    updates: {
+      quantity?: number
+      trolley_id?: number
+      // drawer_id:number|undefined
+    },
   ): Promise<{ item: InventoryItem }> {
     return this.fetch<{ item: InventoryItem }>(`/api/inventory/${flightId}/${itemId}`, {
       method: 'PATCH',

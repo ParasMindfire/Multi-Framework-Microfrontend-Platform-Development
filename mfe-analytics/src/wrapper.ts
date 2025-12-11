@@ -1,52 +1,24 @@
+// mfe-analytics/src/wrapper.ts
 import App from './App.svelte'
-import { mount as svelteMount, unmount as svelteUnmount } from 'svelte'
+import { mount, unmount } from 'svelte'
 
-type LegacyInstance = {
-  $destroy?: () => void
-  $$?: { destroy: () => void }
-}
+class AnalyticsElement extends HTMLElement {
+  private instance: any
 
-type ModernInstance = {}
-
-type SvelteInstance = LegacyInstance | ModernInstance
-
-export default function mountApp(target: HTMLElement, props: Record<string, unknown> = {}) {
-  if (target) target.innerHTML = ''
-
-  let instance: SvelteInstance
-
-  try {
-    instance = svelteMount(App as never, { target, props }) as SvelteInstance
-  } catch {
-    instance = new (App as unknown as new (args: unknown) => SvelteInstance)({
-      target,
-      props,
-    })
+  connectedCallback() {
+    this.instance = mount(App, { target: this })
   }
 
-  return {
-    destroy() {
-      try {
-        cleanup(instance)
-      } finally {
-        target.innerHTML = ''
-      }
-    },
+  disconnectedCallback() {
+    if (this.instance) {
+      unmount(this.instance)
+    }
   }
 }
 
-function cleanup(instance: SvelteInstance) {
-  try {
-    svelteUnmount(instance as never)
-    return
-  } catch {}
-
-  if ('$destroy' in instance && typeof instance.$destroy === 'function') {
-    instance.$destroy()
-    return
-  }
-
-  if ('$$' in instance && instance.$$?.destroy) {
-    instance.$$.destroy()
-  }
+// Register the web component
+if (!customElements.get('analytics-app')) {
+  customElements.define('analytics-app', AnalyticsElement)
 }
+
+export default AnalyticsElement

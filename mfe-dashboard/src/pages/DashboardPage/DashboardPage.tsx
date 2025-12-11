@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { apiClient, useEventBus, EVENT_TYPES } from '@skycart/common'
+import { apiClient, eventBus, EVENT_TYPES } from '@skycart/common'
 import type { Flight } from '@skycart/common'
 import FlightTable from '../../components/FlightTable/FlightTable'
 import SearchFilter from '../../components/SearchFilter/SearchFilter'
@@ -20,7 +20,6 @@ export default function DashboardPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
 
-  const { publish } = useEventBus()
   const itemsPerPage = 10
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export default function DashboardPage() {
   const handleFlightSelect = (flight: Flight) => {
     setSelectedFlight(flight)
     sessionStorage.setItem('selectedFlight', JSON.stringify(flight))
-    publish(EVENT_TYPES.FLIGHT_SELECTED, { flight })
+    eventBus.publish(EVENT_TYPES.FLIGHT_SELECTED, { flight })
     console.log('✈️ Flight selected event published:', flight)
   }
 

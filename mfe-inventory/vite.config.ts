@@ -6,11 +6,27 @@ export default defineConfig({
   server: {
     port: 4300,
     cors: true,
+    strictPort: true,
   },
+  preview: {
+    port: 4300,
+    cors: true,
+    strictPort: true,
+  },
+  base: '/',
   build: {
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        format: 'es',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') return 'assets/index.css'
+          return 'assets/[name]-[hash][extname]'
+        },
+      },
+    },
   },
   plugins: [
     vue(),
@@ -27,6 +43,6 @@ export default defineConfig({
         },
         '@skycart/common': { singleton: true },
       },
-    }) as any,
-  ] as any,
+    }),
+  ],
 })
