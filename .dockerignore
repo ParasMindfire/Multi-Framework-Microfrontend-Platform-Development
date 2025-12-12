@@ -1,0 +1,16 @@
+# .dockerignore (in root)
+**/node_modules
+**/dist
+**/build
+**/.git
+**/.env
+**/*.log
+.DS_Store
+.vscode
+.idea
+
+# Keep these
+!package.json
+!package-lock.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml

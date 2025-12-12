@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: skycart-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Pa1ra2@3
+      POSTGRES_DB: skycart
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./server/db:/docker-entrypoint-initdb.d  
+    networks:
+      - skycart-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: skycart-backend
+    environment:
+      DB_USER: postgres
+      DB_PASS: Pa1ra2@3
+      DB_HOST: postgres       
+      DB_NAME: skycart
+      DB_PORT: 5432
+      PORT: 5000
+      NODE_ENV: production
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy  
+    networks:
+      - skycart-network
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: mfe-dashboard/Dockerfile
+    container_name: skycart-dashboard
+    ports:
+      - "4101:80"
+    networks:
+      - skycart-network
+    restart: unless-stopped
+
+  inventory:
+    build:
+      context: .
+      dockerfile: mfe-inventory/Dockerfile
+    container_name: skycart-inventory
+    ports:
+      - "4300:80"
+    networks:
+      - skycart-network
+    restart: unless-stopped
+
+  analytics:
+    build:
+      context: .
+      dockerfile: mfe-analytics/Dockerfile
+    container_name: skycart-analytics
+    ports:
+      - "4400:80"
+    networks:
+      - skycart-network
+    restart: unless-stopped
+
+  shell:
+    build:
+      context: .
+      dockerfile: shell/Dockerfile
+      args:
+        VITE_DASHBOARD_URL: http://localhost:4101
+        VITE_INVENTORY_URL: http://localhost:4300
+        VITE_ANALYTICS_URL: http://localhost:4400
+        VITE_API_URL: http://skycart-backend:5000
+    container_name: skycart-shell
+    ports:
+      - "3000:80"
+    depends_on:
+      - dashboard
+      - inventory
+      - analytics
+      - backend
+    networks:
+      - skycart-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  skycart-network:
+    driver: bridge
