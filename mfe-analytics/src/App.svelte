@@ -14,8 +14,21 @@
     arrival_time: string
   }
 
+  interface InventoryItem {
+    id: number
+    flight_id: number
+    item_name: string
+    quantity: number
+    trolley_id: number
+    drawer_id: number | null
+  }
+
   let selectedFlight: Flight | null = $state(null)
-  let inventoryCount = $state(0)
+  let trolleyData = $state({
+    trolley1: 0,
+    trolley2: 0,
+    trolley3: 0
+  })
   let crewCount = $state(0)
   let flightActivities: Array<{ time: string; action: string }> = $state([])
 
@@ -29,26 +42,35 @@
   let unsubscribeCrewUpdated: (() => void) | null = null
   let unsubscribeInventoryChanged: (() => void) | null = null
 
-
   async function loadInventoryCount(flightId: number) {
     try {
       console.log('📊 Fetching inventory for flight:', flightId)
       const response = await fetch(`http://localhost:5000/api/inventory/${flightId}`)
       const data = await response.json()
-      const totalQuantity = data.inventory.reduce((sum:any, item:any) => sum + item.quantity, 0)
-      inventoryCount = totalQuantity
-      console.log('📊 Inventory count loaded:', totalQuantity)
+      
+      // ✅ Group by trolley_id and sum quantities
+      const trolleyCounts = data.inventory.reduce((acc: any, item: InventoryItem) => {
+        const trolleyKey = `trolley${item.trolley_id}`
+        acc[trolleyKey] = (acc[trolleyKey] || 0) + item.quantity
+        return acc
+      }, { trolley1: 0, trolley2: 0, trolley3: 0 })
+
+      trolleyData = trolleyCounts
+      
+      const totalQuantity = data.inventory.reduce((sum: number, item: InventoryItem) => sum + item.quantity, 0)
+      
+      console.log('📊 Trolley breakdown:', trolleyCounts)
+      console.log('📊 Total quantity:', totalQuantity)
 
       addActivity(`Loaded ${data.inventory.length} items (${totalQuantity} total quantity)`)
+      addActivity(`Trolley 1: ${trolleyCounts.trolley1}, Trolley 2: ${trolleyCounts.trolley2}, Trolley 3: ${trolleyCounts.trolley3}`)
     } catch (error) {
       console.error('Failed to load inventory:', error)
     }
   }
 
-
-onMount(() => {
+  onMount(() => {
     console.log('🔍 Analytics onMount - Setting up subscriptions')
-    console.log('🔍 EventBus instance:', eventBus)
 
     const storedFlight = sessionStorage.getItem('selectedFlight')
     if (storedFlight) {
@@ -71,27 +93,23 @@ onMount(() => {
       }
     )
 
-  unsubscribeCrewUpdated = eventBus.subscribe(
-    EVENT_TYPES.CREW_UPDATED,
-    (data) => {
-      if (data.action === 'assigned') crewCount++
-      else if (data.action === 'unassigned') crewCount--
-      addActivity(`Crew update: ${data.action}`)
-    }
-  )
-
+    unsubscribeCrewUpdated = eventBus.subscribe(
+      EVENT_TYPES.CREW_UPDATED,
+      (data) => {
+        if (data.action === 'assigned') crewCount++
+        else if (data.action === 'unassigned') crewCount--
+        addActivity(`Crew update: ${data.action}`)
+      }
+    )
 
     unsubscribeInventoryChanged = eventBus.subscribe(
       EVENT_TYPES.INVENTORY_CHANGED,
       (data) => {
         console.log('📊 Analytics received inventory event:', data)
         
-        if (data.action === 'loaded') {
-          inventoryCount = data.quantity
-        } else if (data.action === 'added') {
-          inventoryCount += data.quantity
-        } else if (data.action === 'removed') {
-          inventoryCount -= data.quantity
+        // Reload inventory to get fresh trolley data
+        if (selectedFlight) {
+          loadInventoryCount(selectedFlight.id)
         }
         
         addActivity(`Inventory updated: ${data.action}`)
@@ -99,8 +117,7 @@ onMount(() => {
     )
     
     console.log('✅ Inventory subscription created')
-})
-
+  })
 
   onDestroy(() => {
     if (unsubscribeFlightSelected) unsubscribeFlightSelected()
@@ -144,7 +161,7 @@ onMount(() => {
 
       <div class="chart-card">
         <h3>Inventory Status</h3>
-        <InventoryDeviationChart count={inventoryCount} />
+        <InventoryDeviationChart trolleyData={trolleyData} />
       </div>
 
       <div class="chart-card">
@@ -156,6 +173,7 @@ onMount(() => {
 </div>
 
 <style>
+  /* Your existing styles */
   .analytics-container {
     background: white;
     border-radius: 8px;

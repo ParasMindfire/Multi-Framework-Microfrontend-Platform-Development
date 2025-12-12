@@ -1,12 +1,30 @@
 <script lang="ts">
   interface Props {
-    count: number
+    trolleyData: {
+      trolley1: number
+      trolley2: number
+      trolley3: number
+    }
   }
 
-  let { count }: Props = $props()
+  let { trolleyData }: Props = $props()
 
-  const maxItems = 500 
-  let percentage = $derived(Math.min((count / maxItems) * 100, 100))
+  const maxItemsPerTrolley = 200 // Max capacity per trolley
+  
+  // Get actual counts from props
+  let trolleyA = $derived(trolleyData.trolley1)
+  let trolleyB = $derived(trolleyData.trolley2)
+  let trolleyC = $derived(trolleyData.trolley3)
+  let totalCount = $derived(trolleyA + trolleyB + trolleyC)
+  
+  // Calculate percentage heights for visual display (0-100)
+  let heightA = $derived(Math.min((trolleyA / maxItemsPerTrolley) * 100, 100))
+  let heightB = $derived(Math.min((trolleyB / maxItemsPerTrolley) * 100, 100))
+  let heightC = $derived(Math.min((trolleyC / maxItemsPerTrolley) * 100, 100))
+  
+  // Overall stats
+  let maxTotal = maxItemsPerTrolley * 3
+  let percentage = $derived(Math.min((totalCount / maxTotal) * 100, 100))
   let status = $derived(
     percentage < 30 ? 'Low Stock' : 
     percentage < 70 ? 'Good' : 
@@ -18,14 +36,27 @@
     percentage < 70 ? '#10b981' : 
     percentage >= 100 ? '#f59e0b' : '#10b981'
   )
+
+  // Individual trolley colors based on capacity
+  function getTrolleyColor(count: number): string {
+    const percent = (count / maxItemsPerTrolley) * 100
+    if (percent >= 100) return '#f59e0b' // Orange - at capacity
+    if (percent >= 80) return '#10b981' // Green - high
+    if (percent >= 50) return '#3b82f6' // Blue - medium
+    return '#6b7280' // Gray - low
+  }
+
+  let colorA = $derived(getTrolleyColor(trolleyA))
+  let colorB = $derived(getTrolleyColor(trolleyB))
+  let colorC = $derived(getTrolleyColor(trolleyC))
 </script>
 
 <div class="inventory-chart">
   <div class="stat-display">
     <div class="count" style="color: {statusColor}">
-      {count}
+      {totalCount}
     </div>
-    <div class="label">of {maxItems} items</div>
+    <div class="label">total items across all trolleys</div>
   </div>
 
   <div class="progress-container">
@@ -41,63 +72,77 @@
     <span class="status-text">{status}</span>
   </div>
 
-  <svg width="100%" height="140" viewBox="0 0 300 140" class="inventory-svg">
+  <svg width="100%" height="160" viewBox="0 0 300 160" class="inventory-svg">
+    <!-- Trolley A (trolley_id: 1) -->
     <g transform="translate(20, 20)">
       <rect x="0" y="0" width="60" height="100" fill="#e5e7eb" stroke="#64748b" stroke-width="2" rx="4" />
-      <text x="30" y="-5" text-anchor="middle" font-size="10" fill="#64748b" font-weight="bold">Trolley A</text>
+      <text x="30" y="-5" text-anchor="middle" font-size="10" fill="#64748b" font-weight="bold">Trolley 1</text>
 
-      <rect 
-        x="5" 
-        y="{100 - Math.min((count / maxItems) * 100, 100)}" 
-        width="50" 
-        height="{Math.min((count / maxItems) * 100, 100)}" 
-        fill={statusColor} 
-        opacity="0.8" 
-      />
-
-      {#if count > 0}
-        <text x="30" y="110" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">
-          {Math.min(count, Math.ceil(maxItems/3))}
-        </text>
+      {#if trolleyA > 0}
+        <rect 
+          x="5" 
+          y="{100 - heightA}" 
+          width="50" 
+          height="{heightA}" 
+          fill={colorA} 
+          opacity="0.8" 
+        />
       {/if}
+      
+      <text x="30" y="110" text-anchor="middle" font-size="11" fill="#374151" font-weight="bold">
+        {trolleyA}
+      </text>
+      <text x="30" y="120" text-anchor="middle" font-size="8" fill="#6b7280">
+        {((trolleyA / maxItemsPerTrolley) * 100).toFixed(0)}% full
+      </text>
     </g>
 
+    <!-- Trolley B (trolley_id: 2) -->
     <g transform="translate(110, 20)">
       <rect x="0" y="0" width="60" height="100" fill="#e5e7eb" stroke="#64748b" stroke-width="2" rx="4" />
-      <text x="30" y="-5" text-anchor="middle" font-size="10" fill="#64748b" font-weight="bold">Trolley B</text>
+      <text x="30" y="-5" text-anchor="middle" font-size="10" fill="#64748b" font-weight="bold">Trolley 2</text>
 
-      {#if count > maxItems/3}
+      {#if trolleyB > 0}
         <rect 
           x="5" 
-          y="{100 - Math.min(((count - maxItems/3) / maxItems) * 100, 33.33)}" 
+          y="{100 - heightB}" 
           width="50" 
-          height="{Math.min(((count - maxItems/3) / maxItems) * 100, 33.33)}" 
-          fill={statusColor} 
+          height="{heightB}" 
+          fill={colorB} 
           opacity="0.8" 
         />
-        <text x="30" y="110" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">
-          {Math.min(Math.max(0, count - Math.ceil(maxItems/3)), Math.ceil(maxItems/3))}
-        </text>
       {/if}
+      
+      <text x="30" y="110" text-anchor="middle" font-size="11" fill="#374151" font-weight="bold">
+        {trolleyB}
+      </text>
+      <text x="30" y="120" text-anchor="middle" font-size="8" fill="#6b7280">
+        {((trolleyB / maxItemsPerTrolley) * 100).toFixed(0)}% full
+      </text>
     </g>
 
+    <!-- Trolley C (trolley_id: 3) -->
     <g transform="translate(200, 20)">
       <rect x="0" y="0" width="60" height="100" fill="#e5e7eb" stroke="#64748b" stroke-width="2" rx="4" />
-      <text x="30" y="-5" text-anchor="middle" font-size="10" fill="#64748b" font-weight="bold">Trolley C</text>
+      <text x="30" y="-5" text-anchor="middle" font-size="10" fill="#64748b" font-weight="bold">Trolley 3</text>
 
-      {#if count > (maxItems * 2/3)}
+      {#if trolleyC > 0}
         <rect 
           x="5" 
-          y="{100 - Math.min(((count - maxItems*2/3) / maxItems) * 100, 33.33)}" 
+          y="{100 - heightC}" 
           width="50" 
-          height="{Math.min(((count - maxItems*2/3) / maxItems) * 100, 33.33)}" 
-          fill={statusColor} 
+          height="{heightC}" 
+          fill={colorC} 
           opacity="0.8" 
         />
-        <text x="30" y="110" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">
-          {Math.max(0, count - Math.ceil(maxItems * 2/3))}
-        </text>
       {/if}
+      
+      <text x="30" y="110" text-anchor="middle" font-size="11" fill="#374151" font-weight="bold">
+        {trolleyC}
+      </text>
+      <text x="30" y="120" text-anchor="middle" font-size="8" fill="#6b7280">
+        {((trolleyC / maxItemsPerTrolley) * 100).toFixed(0)}% full
+      </text>
     </g>
   </svg>
 </div>
@@ -120,7 +165,7 @@
 
   .label {
     color: #6b7280;
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-top: 0.25rem;
     font-weight: 500;
   }
