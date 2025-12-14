@@ -1,4 +1,3 @@
-# .dockerignore (in root)
 **/node_modules
 **/dist
 **/build
@@ -9,7 +8,6 @@
 .vscode
 .idea
 
-# Keep these
 !package.json
 !package-lock.json
 !pnpm-lock.yaml

@@ -9,6 +9,7 @@ data:
   DB_PORT: "5432"
   DB_USER: postgres
   PORT: "5000"
+  NODE_ENV: production
 ---
 apiVersion: v1
 kind: Secret
@@ -34,6 +35,19 @@ spec:
       labels:
         app: backend
     spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: 
+        - sh
+        - -c
+        - |
+          echo "Waiting for postgres service..."
+          until nc -z postgres-service 5432; do 
+            echo "Postgres not ready yet..."
+            sleep 2
+          done
+          echo "Postgres is ready!"
       containers:
       - name: backend
         image: skycart/backend:latest
@@ -45,23 +59,18 @@ spec:
             name: backend-config
         - secretRef:
             name: backend-secret
-        livenessProbe:
-          httpGet:
-            path: /api/flights
-            port: 5000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /api/flights
-            port: 5000
-          initialDelaySeconds: 10
-          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: backend
   namespace: skycart
 spec:
   selector:
@@ -69,4 +78,5 @@ spec:
   ports:
   - port: 5000
     targetPort: 5000
+    protocol: TCP
   type: ClusterIP

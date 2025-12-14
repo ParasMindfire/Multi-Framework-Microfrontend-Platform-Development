@@ -4,12 +4,10 @@ echo "🔍 SkyCart Troubleshooting Tool"
 echo "==============================="
 echo ""
 
-# Check if containers are running
 echo "1. Checking running containers..."
 docker-compose ps
 echo ""
 
-# Check logs for errors
 echo "2. Checking for errors in logs..."
 echo ""
 echo "Backend logs:"
@@ -19,7 +17,6 @@ echo "Shell logs:"
 docker-compose logs shell | grep -i error | tail -10
 echo ""
 
-# Test backend API
 echo "3. Testing backend API..."
 curl -s http://localhost:5000/api/flights > /dev/null
 if [ $? -eq 0 ]; then
@@ -29,7 +26,6 @@ else
 fi
 echo ""
 
-# Test frontend services
 echo "4. Testing frontend services..."
 for service in "shell:3000" "dashboard:4101" "inventory:4300" "analytics:4400"; do
     name=$(echo $service | cut -d: -f1)
@@ -44,7 +40,6 @@ for service in "shell:3000" "dashboard:4101" "inventory:4300" "analytics:4400"; 
 done
 echo ""
 
-# Check network connectivity
 echo "5. Checking network connectivity..."
 docker exec skycart-backend wget -q --spider http://postgres:5432
 if [ $? -eq 0 ]; then
