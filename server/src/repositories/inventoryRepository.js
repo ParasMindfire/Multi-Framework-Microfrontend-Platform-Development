@@ -18,7 +18,6 @@ export const removeInventoryItem = async (itemId) => {
 }
 
 export const updateInventoryQuantity = async (itemId, quantity) => {
-  console.log(2)
   const result = await pool.query('UPDATE inventory SET quantity = $1 WHERE id = $2 RETURNING *', [
     quantity,
     itemId,
@@ -27,7 +26,6 @@ export const updateInventoryQuantity = async (itemId, quantity) => {
 }
 
 export const updateInventoryTrolley = async (itemId, trolleyId) => {
-  console.log(21)
   const result = await pool.query(
     'UPDATE inventory SET trolley_id = $1 WHERE id = $2 RETURNING *',
     [trolleyId, itemId],

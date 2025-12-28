@@ -1,0 +1,14 @@
+cat > .eslintignore << 'EOF'
+node_modules
+dist
+build
+__mf__temp
+.next
+.vite
+.turbo
+coverage
+*.min.js
+*.cjs
+pnpm-lock.yaml
+package-lock.json
+EOF

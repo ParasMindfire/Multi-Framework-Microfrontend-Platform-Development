@@ -76,7 +76,6 @@ onMounted(() => {
   }
 
   unsubscribe = eventBus.subscribe(EVENT_TYPES.FLIGHT_SELECTED, (data: any) => {
-    console.log('📦 Inventory received flight:', data.flight)
     selectedFlight.value = data.flight
     loadInventory()
   })
@@ -109,19 +108,11 @@ const loadInventory = async () => {
     // Publish initial inventory
     const totalQuantity = inventoryItems.value.reduce((sum, item) => sum + item.quantity, 0)
 
-    console.log('📦 About to publish INVENTORY_CHANGED:', {
-      flightId: selectedFlight.value.id,
-      quantity: totalQuantity,
-      action: 'loaded',
-    })
-
     eventBus.publish(EVENT_TYPES.INVENTORY_CHANGED, {
       flightId: selectedFlight.value.id,
       quantity: totalQuantity,
       action: 'loaded',
     })
-
-    console.log('📦 Published INVENTORY_CHANGED event')
   } catch (err) {
     error.value = 'Failed to load inventory. Please try again.'
     console.error(err)
@@ -143,7 +134,6 @@ const toggleTrolley = (trolleyId: number) => {
 
     if (trolley.isOpen) {
       selectedTrolley.value = trolley
-      console.log('Trolley selected:', trolley)
     } else {
       if (selectedTrolley.value?.id === trolleyId) {
         selectedTrolley.value = null
@@ -198,15 +188,6 @@ const handleUpdateQuantity = async (itemId: number, newQuantity: number) => {
   try {
     const item = inventoryItems.value.find((i) => i.id === itemId)
     if (!item) return
-
-    console.log('Updating item', {
-      itemId,
-      newQuantity,
-      payload: {
-        quantity: newQuantity,
-        trolley_id: item.trolley_id === null ? undefined : item.trolley_id,
-      },
-    })
 
     await apiClient.updateInventoryItem(selectedFlight.value!.id, itemId, {
       quantity: newQuantity,

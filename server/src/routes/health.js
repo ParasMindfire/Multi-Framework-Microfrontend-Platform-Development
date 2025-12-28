@@ -1,7 +1,11 @@
-// Add this to your Express app
+import express from 'express'
+// Import your database connection (adjust path as needed)
+import pool from '../config/db.js'
+
+const router = express.Router()
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+router.get('/', (req, res) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -10,10 +14,10 @@ app.get('/api/health', (req, res) => {
 })
 
 // Database health check
-app.get('/api/health/db', async (req, res) => {
+router.get('/db', async (req, res) => {
   try {
-    // Try to query the database
-    const result = await pool.query('SELECT 1')
+    // result is assigned but not used, so we can omit it or use _
+    await pool.query('SELECT 1')
     res.status(200).json({
       status: 'healthy',
       database: 'connected',
@@ -28,3 +32,5 @@ app.get('/api/health/db', async (req, res) => {
     })
   }
 })
+
+export default router

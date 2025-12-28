@@ -44,7 +44,6 @@
 
   async function loadInventoryCount(flightId: number) {
     try {
-      console.log('📊 Fetching inventory for flight:', flightId)
       const response = await fetch(`http://localhost:5000/api/inventory/${flightId}`)
       const data = await response.json()
       
@@ -58,9 +57,6 @@
       trolleyData = trolleyCounts
       
       const totalQuantity = data.inventory.reduce((sum: number, item: InventoryItem) => sum + item.quantity, 0)
-      
-      console.log('📊 Trolley breakdown:', trolleyCounts)
-      console.log('📊 Total quantity:', totalQuantity)
 
       addActivity(`Loaded ${data.inventory.length} items (${totalQuantity} total quantity)`)
       addActivity(`Trolley 1: ${trolleyCounts.trolley1}, Trolley 2: ${trolleyCounts.trolley2}, Trolley 3: ${trolleyCounts.trolley3}`)
@@ -70,12 +66,10 @@
   }
 
   onMount(() => {
-    console.log('🔍 Analytics onMount - Setting up subscriptions')
 
     const storedFlight = sessionStorage.getItem('selectedFlight')
     if (storedFlight) {
       selectedFlight = JSON.parse(storedFlight)
-      console.log('🔍 Loaded stored flight:', $state.snapshot(selectedFlight))
       addActivity(`Dashboard initialized`)
       addActivity(`Flight ${selectedFlight!.flight_number} active`)
       
@@ -89,7 +83,6 @@
         sessionStorage.setItem('selectedFlight', JSON.stringify(data.flight))
         loadInventoryCount(data.flight.id) 
         addActivity(`Flight ${data.flight.flight_number} selected`)
-        console.log('📊 Analytics received flight:', data.flight)
       }
     )
 
@@ -105,7 +98,6 @@
     unsubscribeInventoryChanged = eventBus.subscribe(
       EVENT_TYPES.INVENTORY_CHANGED,
       (data) => {
-        console.log('📊 Analytics received inventory event:', data)
         
         // Reload inventory to get fresh trolley data
         if (selectedFlight) {
@@ -115,8 +107,6 @@
         addActivity(`Inventory updated: ${data.action}`)
       }
     )
-    
-    console.log('✅ Inventory subscription created')
   })
 
   onDestroy(() => {

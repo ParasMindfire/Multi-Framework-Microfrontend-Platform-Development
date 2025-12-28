@@ -11,6 +11,3 @@ export const pool = new Pool({
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
 })
-
-console.log('DB_USER:', process.env.DB_USER)
-console.log('DB_PASS:', process.env.DB_PASS)

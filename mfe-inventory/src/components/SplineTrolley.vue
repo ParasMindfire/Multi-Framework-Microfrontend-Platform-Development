@@ -33,7 +33,6 @@ onMounted(async () => {
     splineApp.addEventListener('mouseDown', (event: any) => {
       if (event.target?.name) {
         const objectName: string = event.target.name
-        console.log('Clicked on:', objectName)
 
         if (objectName.startsWith('drawer_')) {
           const parts = objectName.split('_')
@@ -43,7 +42,6 @@ onMounted(async () => {
             const drawerId = parseInt(drawerNum)
 
             if (!isNaN(drawerId)) {
-              console.log(`Drawer ${drawerId} clicked on Trolley ${props.trolleyId}`)
               emit('drawerClick', props.trolleyId, drawerId)
             }
           }

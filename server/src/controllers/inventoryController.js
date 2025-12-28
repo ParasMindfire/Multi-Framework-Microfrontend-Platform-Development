@@ -57,10 +57,6 @@ export const updateInventoryItem = async (req, res) => {
       await updateInventoryTrolley(itemId, trolley_id)
     }
 
-    if (drawer_id !== undefined) {
-      await updateInventoryDrawer(itemId, drawer_id)
-    }
-
     const item = await getInventoryItemById(itemId)
     res.json({ item })
   } catch (error) {

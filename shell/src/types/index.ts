@@ -9,3 +9,7 @@ export interface FeatureCardData {
   description: string
   icon: string
 }
+
+export interface LoadingProps {
+  message?: string
+}
