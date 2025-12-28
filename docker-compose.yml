@@ -9,14 +9,14 @@ services:
       POSTGRES_PASSWORD: Pa1ra2@3
       POSTGRES_DB: skycart
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./server/db:/docker-entrypoint-initdb.d  
+      - ./server/db:/docker-entrypoint-initdb.d
     networks:
       - skycart-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,16 +29,16 @@ services:
     environment:
       DB_USER: postgres
       DB_PASS: Pa1ra2@3
-      DB_HOST: postgres       
+      DB_HOST: postgres
       DB_NAME: skycart
       DB_PORT: 5432
       PORT: 5000
       NODE_ENV: production
     ports:
-      - "5000:5000"
+      - '5000:5000'
     depends_on:
       postgres:
-        condition: service_healthy  
+        condition: service_healthy
     networks:
       - skycart-network
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
       dockerfile: mfe-dashboard/Dockerfile
     container_name: skycart-dashboard
     ports:
-      - "4101:80"
+      - '4101:80'
     networks:
       - skycart-network
     restart: unless-stopped
@@ -60,7 +60,7 @@ services:
       dockerfile: mfe-inventory/Dockerfile
     container_name: skycart-inventory
     ports:
-      - "4300:80"
+      - '4300:80'
     networks:
       - skycart-network
     restart: unless-stopped
@@ -71,7 +71,7 @@ services:
       dockerfile: mfe-analytics/Dockerfile
     container_name: skycart-analytics
     ports:
-      - "4400:80"
+      - '4400:80'
     networks:
       - skycart-network
     restart: unless-stopped
@@ -87,7 +87,7 @@ services:
         VITE_API_URL: http://skycart-backend:5000
     container_name: skycart-shell
     ports:
-      - "3000:80"
+      - '3000:80'
     depends_on:
       - dashboard
       - inventory

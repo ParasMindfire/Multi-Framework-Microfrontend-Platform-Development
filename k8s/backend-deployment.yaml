@@ -6,9 +6,9 @@ metadata:
 data:
   DB_HOST: postgres-service
   DB_NAME: skycart
-  DB_PORT: "5432"
+  DB_PORT: '5432'
   DB_USER: postgres
-  PORT: "5000"
+  PORT: '5000'
   NODE_ENV: production
 ---
 apiVersion: v1
@@ -36,36 +36,36 @@ spec:
         app: backend
     spec:
       initContainers:
-      - name: wait-for-postgres
-        image: busybox:1.36
-        command: 
-        - sh
-        - -c
-        - |
-          echo "Waiting for postgres service..."
-          until nc -z postgres-service 5432; do 
-            echo "Postgres not ready yet..."
-            sleep 2
-          done
-          echo "Postgres is ready!"
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for postgres service..."
+              until nc -z postgres-service 5432; do 
+                echo "Postgres not ready yet..."
+                sleep 2
+              done
+              echo "Postgres is ready!"
       containers:
-      - name: backend
-        image: skycart/backend:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 5000
-        envFrom:
-        - configMapRef:
-            name: backend-config
-        - secretRef:
-            name: backend-secret
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        - name: backend
+          image: skycart/backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: backend-config
+            - secretRef:
+                name: backend-secret
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
 ---
 apiVersion: v1
 kind: Service
@@ -76,7 +76,7 @@ spec:
   selector:
     app: backend
   ports:
-  - port: 5000
-    targetPort: 5000
-    protocol: TCP
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
   type: ClusterIP

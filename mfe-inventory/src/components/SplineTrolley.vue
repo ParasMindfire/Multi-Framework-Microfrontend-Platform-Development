@@ -38,10 +38,10 @@ onMounted(async () => {
         if (objectName.startsWith('drawer_')) {
           const parts = objectName.split('_')
           const drawerNum = parts[1]
-          
+
           if (drawerNum) {
             const drawerId = parseInt(drawerNum)
-            
+
             if (!isNaN(drawerId)) {
               console.log(`Drawer ${drawerId} clicked on Trolley ${props.trolleyId}`)
               emit('drawerClick', props.trolleyId, drawerId)
@@ -50,7 +50,6 @@ onMounted(async () => {
         }
       }
     })
-
   } catch (error) {
     console.error('Error loading Spline scene:', error)
     loading.value = false

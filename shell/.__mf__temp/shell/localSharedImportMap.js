@@ -37,7 +37,7 @@ const usedShared = {
     },
     shareConfig: {
       singleton: true,
-      requiredVersion: '^18.2.0',
+      requiredVersion: '^19.2.0',
     },
   },
   'react-dom': {
@@ -65,7 +65,7 @@ const usedShared = {
     },
     shareConfig: {
       singleton: true,
-      requiredVersion: '^18.2.0',
+      requiredVersion: '^19.2.0',
     },
   },
 }

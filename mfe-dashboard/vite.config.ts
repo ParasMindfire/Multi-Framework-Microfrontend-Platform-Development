@@ -11,6 +11,12 @@ export default defineConfig({
     cors: true,
     strictPort: true,
     origin: 'http://localhost:4101',
+    headers: {
+      // Prevent caching during development
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    },
   },
   preview: {
     port: 4101,

@@ -14,18 +14,18 @@ spec:
         app: inventory
     spec:
       containers:
-      - name: inventory
-        image: skycart/inventory:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
+        - name: inventory
+          image: skycart/inventory:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
 ---
 apiVersion: v1
 kind: Service
@@ -36,6 +36,6 @@ spec:
   selector:
     app: inventory
   ports:
-  - port: 4300
-    targetPort: 80
+    - port: 4300
+      targetPort: 80
   type: ClusterIP

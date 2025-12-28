@@ -9,48 +9,31 @@
       </button>
     </div>
 
-<div v-if="showAddForm" class="add-form">
-  <input
-    v-model="newItem.item_name"
-    type="text"
-    placeholder="Item name"
-    class="form-input"
-  />
-  <input
-    v-model.number="newItem.quantity"
-    type="number"
-    placeholder="Quantity"
-    class="form-input"
-    min="1"
-  />
+    <div v-if="showAddForm" class="add-form">
+      <input v-model="newItem.item_name" type="text" placeholder="Item name" class="form-input" />
+      <input
+        v-model.number="newItem.quantity"
+        type="number"
+        placeholder="Quantity"
+        class="form-input"
+        min="1"
+      />
 
-  <select 
-    v-if="!selectedTrolley" 
-    v-model="newItem.trolley_id" 
-    class="form-input"
-  >
-    <option :value="null">Unassigned</option>
-    <option :value="1">Trolley A</option>
-    <option :value="2">Trolley B</option>
-    <option :value="3">Trolley C</option>
-  </select>
-  
-  <button @click="handleAdd" class="submit-btn">Add</button>
-</div>
+      <select v-if="!selectedTrolley" v-model="newItem.trolley_id" class="form-input">
+        <option :value="null">Unassigned</option>
+        <option :value="1">Trolley A</option>
+        <option :value="2">Trolley B</option>
+        <option :value="3">Trolley C</option>
+      </select>
+
+      <button @click="handleAdd" class="submit-btn">Add</button>
+    </div>
     <div class="items-container">
-      <div
-        v-for="item in displayedItems"
-        :key="item.id"
-        class="item-card"
-      >
+      <div v-for="item in displayedItems" :key="item.id" class="item-card">
         <div class="item-info">
           <h4>{{ item.item_name }}</h4>
           <div class="quantity-controls">
-            <button
-              @click="decrementQuantity(item)"
-              class="qty-btn"
-              :disabled="item.quantity <= 1"
-            >
+            <button @click="decrementQuantity(item)" class="qty-btn" :disabled="item.quantity <= 1">
               −
             </button>
             <input
@@ -60,27 +43,14 @@
               min="1"
               @change="handleQuantityChange(item)"
             />
-            <button
-              @click="incrementQuantity(item)"
-              class="qty-btn"
-            >
-              +
-            </button>
+            <button @click="incrementQuantity(item)" class="qty-btn">+</button>
           </div>
         </div>
-        
-        <button
-          @click="handleRemove(item.id)"
-          class="remove-btn"
-          title="Remove item"
-        >
-          🗑️
-        </button>
+
+        <button @click="handleRemove(item.id)" class="remove-btn" title="Remove item">🗑️</button>
       </div>
 
-      <p v-if="displayedItems.length === 0" class="no-items">
-        No items in inventory
-      </p>
+      <p v-if="displayedItems.length === 0" class="no-items">No items in inventory</p>
     </div>
 
     <div v-if="showConfirmModal" class="modal-overlay" @click.self="cancelRemove">
@@ -94,7 +64,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="summary">
       <p><strong>Total Items:</strong> {{ displayedItems.length }}</p>
@@ -158,7 +127,7 @@ const handleAdd = () => {
   newItem.value = {
     item_name: '',
     quantity: 1,
-    trolley_id: null, 
+    trolley_id: null,
   }
   showAddForm.value = false
 }
@@ -433,7 +402,7 @@ const handleQuantityChange = (item: InventoryItem) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
   z-index: 1000;
 }
 
@@ -442,7 +411,7 @@ const handleQuantityChange = (item: InventoryItem) => {
   padding: 1rem 1.25rem;
   border-radius: 8px;
   width: 320px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .modal h4 {
@@ -478,5 +447,4 @@ const handleQuantityChange = (item: InventoryItem) => {
   border-radius: 6px;
   cursor: pointer;
 }
-
 </style>

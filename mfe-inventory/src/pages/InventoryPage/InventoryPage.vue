@@ -3,8 +3,8 @@
     <header class="inventory-header">
       <h2>Inventory & Galley Management</h2>
       <p v-if="selectedFlight">
-        Flight: <strong>{{ selectedFlight.flight_number }}</strong> 
-        ({{ selectedFlight.origin }} → {{ selectedFlight.destination }})
+        Flight: <strong>{{ selectedFlight.flight_number }}</strong> ({{ selectedFlight.origin }} →
+        {{ selectedFlight.destination }})
       </p>
       <p v-else class="no-flight">No flight selected. Please select a flight from Dashboard.</p>
     </header>
@@ -22,7 +22,7 @@
     <div v-else-if="selectedFlight" class="inventory-content">
       <div class="galley-section">
         <h3>Galley Layout</h3>
-        <GalleyLayout 
+        <GalleyLayout
           :trolleys="trolleys"
           @toggle-trolley="toggleTrolley"
           @trolley-click="selectTrolley"
@@ -30,12 +30,9 @@
       </div>
 
       <div class="inventory-section">
-          <div v-if="selectedTrolley" class="back-button-container">
-            <button @click="selectedTrolley = null" class="back-btn">
-              ← Back to All Items
-            </button>
-          </div>
-
+        <div v-if="selectedTrolley" class="back-button-container">
+          <button @click="selectedTrolley = null" class="back-btn">← Back to All Items</button>
+        </div>
 
         <InventoryList
           :items="inventoryItems"
@@ -73,10 +70,10 @@ let unsubscribe: (() => void) | null = null
 
 onMounted(() => {
   const storedFlight = sessionStorage.getItem('selectedFlight')
-    if (storedFlight) {
-      selectedFlight.value = JSON.parse(storedFlight)
-      loadInventory()
-    }
+  if (storedFlight) {
+    selectedFlight.value = JSON.parse(storedFlight)
+    loadInventory()
+  }
 
   unsubscribe = eventBus.subscribe(EVENT_TYPES.FLIGHT_SELECTED, (data: any) => {
     console.log('📦 Inventory received flight:', data.flight)
@@ -98,36 +95,33 @@ const loadInventory = async () => {
     loading.value = true
     error.value = null
 
-    const response = await fetch(
-      `http://localhost:5000/api/inventory/${selectedFlight.value.id}`
-    )
-    
+    const response = await fetch(`http://localhost:5000/api/inventory/${selectedFlight.value.id}`)
+
     if (!response.ok) {
       throw new Error('Failed to load inventory')
     }
 
     const data = await response.json()
     inventoryItems.value = data.inventory
-    
+
     distributeItemsToTrolleys()
 
     // Publish initial inventory
     const totalQuantity = inventoryItems.value.reduce((sum, item) => sum + item.quantity, 0)
-    
+
     console.log('📦 About to publish INVENTORY_CHANGED:', {
       flightId: selectedFlight.value.id,
       quantity: totalQuantity,
       action: 'loaded',
     })
-    
+
     eventBus.publish(EVENT_TYPES.INVENTORY_CHANGED, {
       flightId: selectedFlight.value.id,
       quantity: totalQuantity,
       action: 'loaded',
     })
-    
+
     console.log('📦 Published INVENTORY_CHANGED event')
-    
   } catch (err) {
     error.value = 'Failed to load inventory. Please try again.'
     console.error(err)
@@ -138,15 +132,15 @@ const loadInventory = async () => {
 
 const distributeItemsToTrolleys = () => {
   trolleys.value.forEach((trolley) => {
-    trolley.items = inventoryItems.value.filter(item => item.trolley_id === trolley.id)
+    trolley.items = inventoryItems.value.filter((item) => item.trolley_id === trolley.id)
   })
 }
 
 const toggleTrolley = (trolleyId: number) => {
-  const trolley = trolleys.value.find(t => t.id === trolleyId)
+  const trolley = trolleys.value.find((t) => t.id === trolleyId)
   if (trolley) {
     trolley.isOpen = !trolley.isOpen
-  
+
     if (trolley.isOpen) {
       selectedTrolley.value = trolley
       console.log('Trolley selected:', trolley)
@@ -164,17 +158,14 @@ const selectTrolley = (trolley: Trolley) => {
 
 const handleAddItem = async (item: InventoryItem) => {
   try {
-    const response = await apiClient.addInventoryItem(
-      selectedFlight.value!.id,
-      {
-        item_name: item.item_name,
-        quantity: item.quantity,
-        trolley_id: item.trolley_id || null,
-        category: 'food',
-        unit: '',
-        location: ''
-      }
-    )
+    const response = await apiClient.addInventoryItem(selectedFlight.value!.id, {
+      item_name: item.item_name,
+      quantity: item.quantity,
+      trolley_id: item.trolley_id || null,
+      category: 'food',
+      unit: '',
+      location: '',
+    })
     inventoryItems.value.push(response.item)
     distributeItemsToTrolleys()
     eventBus.publish(EVENT_TYPES.INVENTORY_CHANGED, {
@@ -192,7 +183,7 @@ const handleAddItem = async (item: InventoryItem) => {
 const handleRemoveItem = async (itemId: number) => {
   try {
     await apiClient.deleteInventoryItem(selectedFlight.value!.id, itemId)
-    const index = inventoryItems.value.findIndex(item => item.id === itemId)
+    const index = inventoryItems.value.findIndex((item) => item.id === itemId)
     if (index > -1) {
       inventoryItems.value.splice(index, 1)
       distributeItemsToTrolleys()
@@ -205,40 +196,32 @@ const handleRemoveItem = async (itemId: number) => {
 
 const handleUpdateQuantity = async (itemId: number, newQuantity: number) => {
   try {
-    const item = inventoryItems.value.find(i => i.id === itemId)
+    const item = inventoryItems.value.find((i) => i.id === itemId)
     if (!item) return
 
-    console.log("Updating item", {
+    console.log('Updating item', {
       itemId,
       newQuantity,
       payload: {
         quantity: newQuantity,
-        trolley_id: item.trolley_id === null ? undefined : item.trolley_id
-      }
+        trolley_id: item.trolley_id === null ? undefined : item.trolley_id,
+      },
     })
 
-
-    await apiClient.updateInventoryItem(
-      selectedFlight.value!.id,
-      itemId,
-      {
-        quantity: newQuantity,
-        trolley_id: item.trolley_id === null ? undefined : item.trolley_id
-      }
-    )
+    await apiClient.updateInventoryItem(selectedFlight.value!.id, itemId, {
+      quantity: newQuantity,
+      trolley_id: item.trolley_id === null ? undefined : item.trolley_id,
+    })
     item.quantity = newQuantity
-
   } catch (err) {
-    console.error("Failed to update quantity:", err)
-    alert("Failed to update quantity")
+    console.error('Failed to update quantity:', err)
+    alert('Failed to update quantity')
   }
 }
-
-
 </script>
 
 <style scoped>
-  .back-button-container {
+.back-button-container {
   margin-bottom: 1rem;
 }
 
@@ -299,8 +282,12 @@ const handleUpdateQuantity = async (itemId: number, newQuantity: number) => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error button {

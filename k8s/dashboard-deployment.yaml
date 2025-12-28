@@ -14,18 +14,18 @@ spec:
         app: dashboard
     spec:
       containers:
-      - name: dashboard
-        image: skycart/dashboard:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
+        - name: dashboard
+          image: skycart/dashboard:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
 ---
 apiVersion: v1
 kind: Service
@@ -36,6 +36,6 @@ spec:
   selector:
     app: dashboard
   ports:
-  - port: 4101
-    targetPort: 80
+    - port: 4101
+      targetPort: 80
   type: ClusterIP

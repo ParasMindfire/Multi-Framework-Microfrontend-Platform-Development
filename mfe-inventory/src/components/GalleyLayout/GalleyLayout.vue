@@ -1,11 +1,6 @@
 <template>
   <div class="galley-layout">
-    <svg 
-      width="700" 
-      height="500" 
-      viewBox="0 0 700 500"
-      class="galley-svg"
-    >
+    <svg width="700" height="500" viewBox="0 0 700 500" class="galley-svg">
       <defs>
         <linearGradient id="floorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" style="stop-color: #f1f5f9; stop-opacity: 1" />
@@ -58,19 +53,23 @@
       />
 
       <g opacity="0.2">
-        <line v-for="i in 14" :key="`v${i}`"
-          :x1="50 + (i-1) * 50"
+        <line
+          v-for="i in 14"
+          :key="`v${i}`"
+          :x1="50 + (i - 1) * 50"
           y1="20"
-          :x2="50 + (i-1) * 50"
+          :x2="50 + (i - 1) * 50"
           y2="480"
           stroke="#64748b"
           stroke-width="1"
         />
-        <line v-for="i in 10" :key="`h${i}`"
+        <line
+          v-for="i in 10"
+          :key="`h${i}`"
           x1="20"
-          :y1="50 + (i-1) * 50"
+          :y1="50 + (i - 1) * 50"
           x2="680"
-          :y2="50 + (i-1) * 50"
+          :y2="50 + (i - 1) * 50"
           stroke="#64748b"
           stroke-width="1"
         />
@@ -81,23 +80,15 @@
         GALLEY STATION
       </text>
 
-      <g 
-        v-for="trolley in trolleys" 
+      <g
+        v-for="trolley in trolleys"
         :key="trolley.id"
         :transform="`translate(${trolley.position.x}, ${trolley.position.y})`"
         @click="handleTrolleyClick(trolley)"
         class="trolley-group"
         filter="url(#dropShadow)"
       >
-
-        <ellipse
-          cx="75"
-          cy="245"
-          rx="65"
-          ry="8"
-          fill="#334155"
-          opacity="0.4"
-        />
+        <ellipse cx="75" cy="245" rx="65" ry="8" fill="#334155" opacity="0.4" />
 
         <rect
           x="10"
@@ -110,34 +101,10 @@
           rx="8"
         />
 
-        <rect
-          x="15"
-          y="25"
-          width="8"
-          height="210"
-          fill="#1e293b"
-          opacity="0.3"
-          rx="2"
-        />
-        <rect
-          x="127"
-          y="25"
-          width="8"
-          height="210"
-          fill="#f8fafc"
-          opacity="0.3"
-          rx="2"
-        />
+        <rect x="15" y="25" width="8" height="210" fill="#1e293b" opacity="0.3" rx="2" />
+        <rect x="127" y="25" width="8" height="210" fill="#f8fafc" opacity="0.3" rx="2" />
 
-        <rect
-          x="10"
-          y="20"
-          width="130"
-          height="8"
-          fill="#f8fafc"
-          opacity="0.4"
-          rx="8"
-        />
+        <rect x="10" y="20" width="130" height="8" fill="#f8fafc" opacity="0.4" rx="8" />
 
         <g v-if="!trolley.isOpen">
           <rect
@@ -165,7 +132,7 @@
           <g v-for="shelf in 4" :key="shelf">
             <rect
               x="20"
-              :y="45 + (shelf-1) * 45"
+              :y="45 + (shelf - 1) * 45"
               width="110"
               height="35"
               fill="#f8fafc"
@@ -175,7 +142,7 @@
             />
             <rect
               x="20"
-              :y="45 + (shelf-1) * 45"
+              :y="45 + (shelf - 1) * 45"
               width="110"
               height="4"
               fill="#10b981"
@@ -209,19 +176,12 @@
         <g>
           <ellipse cx="35" cy="245" rx="8" ry="6" fill="#1e293b" />
           <ellipse cx="35" cy="244" rx="6" ry="4" fill="#475569" />
-          
+
           <ellipse cx="115" cy="245" rx="8" ry="6" fill="#1e293b" />
           <ellipse cx="115" cy="244" rx="6" ry="4" fill="#475569" />
         </g>
 
-        <rect
-          x="30"
-          y="250"
-          width="90"
-          height="25"
-          fill="#1e293b"
-          rx="4"
-        />
+        <rect x="30" y="250" width="90" height="25" fill="#1e293b" rx="4" />
         <text
           x="75"
           y="267"
@@ -234,14 +194,7 @@
         </text>
 
         <circle cx="125" cy="35" r="18" fill="#10b981" stroke="white" stroke-width="2" />
-        <text
-          x="125"
-          y="41"
-          text-anchor="middle"
-          font-size="14"
-          fill="white"
-          font-weight="bold"
-        >
+        <text x="125" y="41" text-anchor="middle" font-size="14" fill="white" font-weight="bold">
           {{ trolley.items.length }}
         </text>
 
@@ -262,33 +215,34 @@
       </g>
 
       <!-- Legend Panel -->
-      <rect x="30" y="410" width="300" height="70" fill="white" rx="8" stroke="#cbd5e1" stroke-width="2" />
-      <text x="50" y="435" font-size="14" fill="#475569" font-weight="bold">
-        💡 Instructions
-      </text>
-      <text x="50" y="455" font-size="12" fill="#64748b">
-        • Click trolley to open/close
-      </text>
-      <text x="50" y="472" font-size="12" fill="#64748b">
-        • Green = Open | Gray = Closed
-      </text>
+      <rect
+        x="30"
+        y="410"
+        width="300"
+        height="70"
+        fill="white"
+        rx="8"
+        stroke="#cbd5e1"
+        stroke-width="2"
+      />
+      <text x="50" y="435" font-size="14" fill="#475569" font-weight="bold">💡 Instructions</text>
+      <text x="50" y="455" font-size="12" fill="#64748b">• Click trolley to open/close</text>
+      <text x="50" y="472" font-size="12" fill="#64748b">• Green = Open | Gray = Closed</text>
 
       <!-- Status Indicators -->
       <g transform="translate(400, 410)">
         <rect width="270" height="70" fill="white" rx="8" stroke="#cbd5e1" stroke-width="2" />
-        
-        <text x="20" y="25" font-size="14" fill="#475569" font-weight="bold">
-          Status Overview
-        </text>
-        
+
+        <text x="20" y="25" font-size="14" fill="#475569" font-weight="bold">Status Overview</text>
+
         <circle cx="30" cy="45" r="8" fill="#10b981" />
         <text x="45" y="50" font-size="12" fill="#64748b">
-          Open: {{ trolleys.filter(t => t.isOpen).length }}
+          Open: {{ trolleys.filter((t) => t.isOpen).length }}
         </text>
-        
+
         <circle cx="150" cy="45" r="8" fill="#94a3b8" />
         <text x="165" y="50" font-size="12" fill="#64748b">
-          Closed: {{ trolleys.filter(t => !t.isOpen).length }}
+          Closed: {{ trolleys.filter((t) => !t.isOpen).length }}
         </text>
       </g>
     </svg>

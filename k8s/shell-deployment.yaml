@@ -14,12 +14,12 @@ spec:
         app: shell
     spec:
       containers:
-      - name: shell
-        image: skycart/shell:latest
-        imagePullPolicy: IfNotPresent  
-        ports:
-        - containerPort: 80
-          name: http
+        - name: shell
+          image: skycart/shell:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
 ---
 apiVersion: v1
 kind: Service
@@ -30,7 +30,7 @@ spec:
   selector:
     app: shell
   ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
+    - port: 80
+      targetPort: 80
+      protocol: TCP
   type: LoadBalancer
