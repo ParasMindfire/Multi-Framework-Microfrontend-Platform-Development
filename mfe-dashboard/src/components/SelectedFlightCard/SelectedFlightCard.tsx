@@ -1,15 +1,12 @@
 import { formatTime } from '@skycart/common'
-import type { Flight } from '@skycart/common'
+import type { SelectedFlightCardProps } from '../../types'
+import { UI_TEXT } from '../../constants'
 import './SelectedFlightCard.css'
-
-interface SelectedFlightCardProps {
-  flight: Flight
-}
 
 export default function SelectedFlightCard({ flight }: SelectedFlightCardProps) {
   return (
     <div className="selected-flight-card">
-      <h3>Selected Flight</h3>
+      <h3>{UI_TEXT.SELECTED_FLIGHT_TITLE}</h3>
       <div className="flight-details">
         <div className="detail-item">
           <strong>Flight Number</strong>

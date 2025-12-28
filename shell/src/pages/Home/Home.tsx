@@ -8,22 +8,22 @@ export default function Home() {
 
       <div className="feature-grid">
         <div className="feature-card">
-          <h3>✈️ Flight Dashboard</h3>
+          <h3>Flight Dashboard</h3>
           <p>View and manage flight schedules, filter and sort operations</p>
         </div>
 
         <div className="feature-card">
-          <h3>👥 Crew Management</h3>
+          <h3>Crew Management</h3>
           <p>Assign crew members to flights and manage assignments</p>
         </div>
 
         <div className="feature-card">
-          <h3>📦 Inventory</h3>
+          <h3>Inventory</h3>
           <p>Track galley items and manage in-flight inventory</p>
         </div>
 
         <div className="feature-card">
-          <h3>📊 Analytics</h3>
+          <h3>Analytics</h3>
           <p>View real-time charts and operational insights</p>
         </div>
       </div>

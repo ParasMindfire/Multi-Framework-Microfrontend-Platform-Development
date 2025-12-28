@@ -1,6 +1,4 @@
-interface LoadingProps {
-  message?: string
-}
+import type { LoadingProps } from '../../../types'
 
 export default function Loading({ message = 'Loading module...' }: LoadingProps) {
   return (
