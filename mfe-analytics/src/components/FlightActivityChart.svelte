@@ -1,9 +1,8 @@
 <script lang="ts">
-  interface Props {
-    activities: Array<{ time: string; action: string }>
-  }
+    import type { FlightChartProps } from "../types"
 
-  let { activities }: Props = $props()
+
+  let { activities }: FlightChartProps = $props()
 </script>
 
 <div class="activity-chart">

@@ -1,9 +1,6 @@
 <script lang="ts">
-  interface Props {
-    count: number
-  }
-
-  let { count }: Props = $props()
+  import type { CrewChartProps } from "../types"
+  let { count }: CrewChartProps = $props()
 
   const maxCrew = 10
   let percentage = $derived(Math.min((count / maxCrew) * 100, 100))

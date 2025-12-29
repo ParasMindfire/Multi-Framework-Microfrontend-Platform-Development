@@ -1,13 +1,6 @@
 <script lang="ts">
-  interface Props {
-    trolleyData: {
-      trolley1: number
-      trolley2: number
-      trolley3: number
-    }
-  }
-
-  let { trolleyData }: Props = $props()
+  import type { InventoryDeviationProps } from "../types"
+  let { trolleyData }: InventoryDeviationProps = $props()
 
   const maxItemsPerTrolley = 200 // Max capacity per trolley
   
