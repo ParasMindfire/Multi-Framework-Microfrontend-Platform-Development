@@ -1,31 +1,20 @@
 import './Home.css'
+import { FEATURE_CARDS, HOME_TEXT } from '../../constants'
 
 export default function Home() {
   return (
     <div className="home-container">
-      <h2>Welcome to SkyCart Operations Platform</h2>
-      <p>Select a module from the navigation to get started.</p>
+      <h2>{HOME_TEXT.TITLE}</h2>
+      <p>{HOME_TEXT.SUBTITLE}</p>
 
       <div className="feature-grid">
-        <div className="feature-card">
-          <h3>Flight Dashboard</h3>
-          <p>View and manage flight schedules, filter and sort operations</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>Crew Management</h3>
-          <p>Assign crew members to flights and manage assignments</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>Inventory</h3>
-          <p>Track galley items and manage in-flight inventory</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>Analytics</h3>
-          <p>View real-time charts and operational insights</p>
-        </div>
+        {FEATURE_CARDS.map((card, index) => (
+          <div key={index} className="feature-card">
+            <span className="feature-icon">{card.icon}</span>
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   )

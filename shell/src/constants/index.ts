@@ -13,26 +13,31 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const FEATURE_CARDS: FeatureCardData[] = [
   {
-    icon: '✈️',
+    icon: '',
     title: 'Flight Dashboard',
     description: 'View and manage flight schedules, filter and sort operations',
   },
   {
-    icon: '👥',
+    icon: '',
     title: 'Crew Management',
     description: 'Assign crew members to flights and manage assignments',
   },
   {
-    icon: '📦',
+    icon: '',
     title: 'Inventory',
     description: 'Track galley items and manage in-flight inventory',
   },
   {
-    icon: '📊',
+    icon: '',
     title: 'Analytics',
     description: 'View real-time charts and operational insights',
   },
 ]
+
+export const HOME_TEXT = {
+  TITLE: 'Welcome to SkyCart Operations Platform',
+  SUBTITLE: 'Select a module from the navigation to get started.',
+}
 
 /**
  * Remote MFE URLs for different environments
