@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { InventoryItem, Trolley } from '../types'
+import type { InventoryItem, Trolley } from '../types/inventory'
 
 const props = defineProps<{
   items: InventoryItem[]

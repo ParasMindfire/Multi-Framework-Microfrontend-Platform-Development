@@ -250,7 +250,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Trolley } from '../types'
+import type { Trolley } from '../types/inventory'
 
 defineProps<{
   trolleys: Trolley[]
