@@ -1,9 +1,9 @@
-import { createApp } from 'vue'
+import { createApp, type App as VueApp } from 'vue'
 import App from './App.vue'
 import './style.css'
 
 class InventoryElement extends HTMLElement {
-  private app: any
+  private app: VueApp | null = null
   private container: HTMLDivElement | null = null
 
   connectedCallback() {

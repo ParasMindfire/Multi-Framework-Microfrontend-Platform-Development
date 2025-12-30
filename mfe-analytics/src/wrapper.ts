@@ -3,7 +3,7 @@ import App from './App.svelte'
 import { mount, unmount } from 'svelte'
 
 class AnalyticsElement extends HTMLElement {
-  private instance: any
+  private instance: ReturnType<typeof mount> | null = null
 
   connectedCallback() {
     this.instance = mount(App, { target: this })

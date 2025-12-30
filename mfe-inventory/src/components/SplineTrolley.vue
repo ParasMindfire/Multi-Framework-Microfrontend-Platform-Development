@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="spline-wrapper">
     <canvas ref="splineCanvas" class="spline-canvas"></canvas>
     <div v-if="loading" class="loading-overlay">Loading 3D Model...</div>
@@ -90,4 +90,4 @@ onUnmounted(() => {
   font-size: 14px;
   color: #64748b;
 }
-</style>
+</style> -->

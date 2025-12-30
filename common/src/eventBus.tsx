@@ -1,5 +1,5 @@
 // packages/common/src/eventBus.ts (Pure JS - no JSX)
-type EventCallback = (data: any) => void
+type EventCallback = (data: unknown) => void
 
 class EventBus {
   private events: Map<string, Set<EventCallback>> = new Map()
@@ -16,7 +16,7 @@ class EventBus {
     }
   }
 
-  publish(event: string, data?: any): void {
+  publish(event: string, data?: unknown): void {
     const callbacks = this.events.get(event)
 
     if (callbacks) {

@@ -1,6 +1,6 @@
 // composables/useFlightSubscription.ts
 import { ref, onMounted, onUnmounted } from 'vue'
-import { eventBus, EVENT_TYPES } from '@skycart/common'
+import { eventBus, EVENT_TYPES, type FlightSelectedEvent } from '@skycart/common'
 import type { Flight } from '../types/inventory'
 import { STORAGE_KEYS } from '../constants/inventory'
 
@@ -17,10 +17,11 @@ export function useFlightSubscription(onFlightChange: (flight: Flight) => void) 
     }
 
     // Subscribe to flight selection events
-    unsubscribe = eventBus.subscribe(EVENT_TYPES.FLIGHT_SELECTED, (data: any) => {
-      selectedFlight.value = data.flight
-      sessionStorage.setItem(STORAGE_KEYS.SELECTED_FLIGHT, JSON.stringify(data.flight))
-      onFlightChange(data.flight)
+    unsubscribe = eventBus.subscribe(EVENT_TYPES.FLIGHT_SELECTED, (data: unknown) => {
+      const eventData = data as FlightSelectedEvent
+      selectedFlight.value = eventData.flight
+      sessionStorage.setItem(STORAGE_KEYS.SELECTED_FLIGHT, JSON.stringify(eventData.flight))
+      onFlightChange(eventData.flight)
     })
   })
 

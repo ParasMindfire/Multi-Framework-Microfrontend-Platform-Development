@@ -14,7 +14,7 @@ export const createInventoryItem = async (flightId, itemName, quantity, trolleyI
 }
 
 export const removeInventoryItem = async (itemId) => {
-  await pool.query('DELETE FROM inventory WHERE id = $1', [itemId])
+  return await pool.query('DELETE FROM inventory WHERE id = $1', [itemId])
 }
 
 export const updateInventoryQuantity = async (itemId, quantity) => {
