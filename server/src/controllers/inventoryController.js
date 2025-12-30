@@ -7,17 +7,17 @@ import {
 } from '../services/inventoryService.js'
 import { getInventoryItemById } from '../repositories/inventoryRepository.js'
 
-export const getInventory = async (req, res) => {
+export const getInventory = async (req, res, next) => {
   try {
     const flightId = req.params.flightId
     const items = await fetchInventory(flightId)
     res.json({ inventory: items })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    next(error)
   }
 }
 
-export const addInventoryItem = async (req, res) => {
+export const addInventoryItem = async (req, res, next) => {
   try {
     const flightId = req.params.flightId
     const { item_name, quantity, trolley_id, drawer_id } = req.body
@@ -30,21 +30,21 @@ export const addInventoryItem = async (req, res) => {
     )
     res.json({ item })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    next(error)
   }
 }
 
-export const deleteInventoryItem = async (req, res) => {
+export const deleteInventoryItem = async (req, res, next) => {
   try {
     const { itemId } = req.params
     await removeInventoryItem(itemId)
     res.json({ success: true })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    next(error)
   }
 }
 
-export const updateInventoryItem = async (req, res) => {
+export const updateInventoryItem = async (req, res, next) => {
   try {
     const { itemId } = req.params
     const { quantity, trolley_id, drawer_id } = req.body
@@ -60,6 +60,6 @@ export const updateInventoryItem = async (req, res) => {
     const item = await getInventoryItemById(itemId)
     res.json({ item })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    next(error)
   }
 }
